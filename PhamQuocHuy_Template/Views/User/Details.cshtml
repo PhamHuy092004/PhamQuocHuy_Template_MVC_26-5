@@ -1,0 +1,96 @@
+﻿@model PhamQuocHuy_Template.Models.Users
+
+@{
+    ViewData["Title"] = "Chi tiết hồ sơ";
+}
+
+<h1>Thông tin chi tiết hồ sơ</h1>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-md-3">
+                Mã hồ sơ
+            </dt>
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.IdUser)
+            </dd>
+            <dt class="col-md-3">
+                Họ và tên
+            </dt>
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.UserName)
+            </dd>
+            <dt class="col-md-3">
+                Ngày sinh
+            </dt>
+            <dd class="col-md-9">
+                @Model.Birth.ToString("dd/MM/yyyy")
+            </dd>
+            <dt class="col-md-3">
+                Email
+            </dt>
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt class="col-md-3">
+                Giới tính
+            </dt>
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.Gender)
+            </dd>
+            <dt class="col-md-3">
+                Số điện thoại
+            </dt>
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+            <dt class="col-md-3">
+                Ngành nghề ứng tuyển
+            </dt>
+            @if (Model.IndustriesDetails != null && Model.IndustriesDetails.Any())
+            {
+                <dd class="col-md-9">
+                    @foreach (var industry in Model.IndustriesDetails)
+                    {
+                        <span>@industry.Industries.NameIndust</span>
+                        @if (industry != Model.IndustriesDetails.Last())
+                        {
+                            <span>,</span>
+                        }
+                    }
+                </dd>
+            }
+            <dt class="col-md-3">
+                Trạng thái duyệt
+            </dt>
+            <dd class="col-md-9">
+                @if (@Model.Status == 0)
+                {
+                    <text>Chưa duyệt</text>
+                }
+                else if (@Model.Status == 2)
+                {
+                    <text>Đã duyệt</text>
+                }
+                else
+                {
+                    <text>Đang chờ</text>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+<div class="mt-3">
+    <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
+    @if (Model.Status == 0)
+    {
+        <a asp-action="Approve" asp-route-id="@Model.IdUser" class="btn btn-success ml-2">Duyệt</a>
+        <a asp-action="Pending" asp-route-id="@Model.IdUser" class="btn btn-warning ml-2">Đang chờ</a>
+    }
+    @if (Model.Status == 1)
+    {
+        <a asp-action="Approve" asp-route-id="@Model.IdUser" class="btn btn-success ml-2">Duyệt</a>
+    
+    }
+</div>

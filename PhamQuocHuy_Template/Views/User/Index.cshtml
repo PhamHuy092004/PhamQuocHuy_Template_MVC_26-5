@@ -1,0 +1,86 @@
+﻿@model IEnumerable<PhamQuocHuy_Template.Models.Users>
+
+@{
+    ViewData["Title"] = "Danh sách CV";
+}
+<style>
+    .status-red {
+        color: red;
+        font-weight:bolder;
+    }
+
+    .status-yellow {
+        color: yellow;
+        font-weight: bolder;
+    }
+
+    .status-green {
+        color: green;
+        font-weight: bolder;
+    }
+</style>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-icon-start alert-dismissible fade show" id="successMessage">
+        <span class="alert-icon bg-success text-white">
+            <i class="ph-check-circle"></i>
+        </span>
+        <span class="fw-semibold">Chúc mừng!</span>  @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<h1>Danh sách hồ sơ</h1>
+<table class="table table-striped text-center">
+    <thead>
+        <tr>
+            <th scope="col">Mã hồ sơ</th>
+            <th scope="col">Họ và tên</th>
+            <th scope="col">Ngày sinh</th>
+            <th scope="col">Email</th>
+            <th scope="col">Giới tính</th>
+            <th scope="col">Số điện thoại</th>
+            <th scope="col">Trạng thái duyệt</th>
+            <th scope="col">Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.IdUser)</td>
+                <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                <td>@item.Birth.ToString("dd/MM/yyyy")</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.Gender)</td>
+                <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                <td class="text-center">
+                    @if (@item.Status == 0)
+                    {
+                        <span class="status-red">Chưa duyệt</span>
+                    }
+                    else if (@item.Status == 1)
+                    {
+                        <span class="status-yellow">Đang xem</span>
+                    }
+                    else
+                    {
+                        <span class="status-green">Đã duyệt</span>
+                    }
+                </td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="icon_new">Hành động</i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                          
+                            <li><a class="dropdown-item" asp-action="Details" asp-route-id="@item.IdUser">Xem chi tiết</a></li>
+                            <li><a class="dropdown-item text-danger" asp-action="Delete" asp-route-id="@item.IdUser">Xóa</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

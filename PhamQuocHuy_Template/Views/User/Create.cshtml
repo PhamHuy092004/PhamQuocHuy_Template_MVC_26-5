@@ -1,0 +1,138 @@
+﻿@model PhamQuocHuy_Template.Models.Users
+
+@{
+    ViewData["Title"] = "Nộp CV";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successMessage" class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="errorMessage" class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+<div class="card mb-3">
+
+    <div class="card-header bg-primary text-white">
+        <h5 class="card-title">Tuyển dụng tại Công ty STC Connection</h5>
+    </div>
+    <div class="card-body">
+        <p class="card-text">Công ty STC Connection đang tìm kiếm những nhân tài xuất sắc để gia nhập đội ngũ của chúng tôi. Chúng tôi cung cấp môi trường làm việc năng động, sáng tạo và cơ hội phát triển nghề nghiệp tuyệt vời.</p>
+
+        <h4>Vị trí tuyển dụng:</h4>
+        <ul>
+            <li>Kỹ sư phần mềm</li>
+            <li>Kiểm thử</li>
+
+        </ul>
+
+        <h4>Quyền lợi:</h4>
+        <ul>
+            <li>Lương thưởng cạnh tranh</li>
+            <li>Bảo hiểm xã hội, Bảo hiểm y tế</li>
+            <li>Chế độ nghỉ phép</li>
+            <li>Môi trường làm việc năng động, sáng tạo</li>
+            <li>Cơ hội phát triển nghề nghiệp</li>
+        </ul>
+
+        <h4>Cách ứng tuyển:</h4>
+        <p>
+            Hoặc ứng tuyển trực tuyến tại đây: 
+        </p>  
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">Nộp CV</button>
+        <p>Hạn chót nộp hồ sơ: 30/11/2024</p>
+
+        <h4>Thông tin liên hệ:</h4>
+        
+    </div>
+  
+</div>
+
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel">Tạo hồ sơ của bạn</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+
+           
+            <div class="modal-body">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label class="control-label">Họ và tên</label>
+                        <input asp-for="UserName" name="UserName" class="form-control" placeholder="Nhập họ và tên" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Ngày sinh</label>
+                        <input asp-for="Birth" type="date" name="Birth" class="form-control" />
+                        <span asp-validation-for="Birth" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Email</label>
+                        <input asp-for="Email" name="Email" class="form-control" placeholder="Nhập email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Giới tính</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="male" name="Gender" value="Nam" checked>
+                            <label class="form-check-label" for="male">Nam</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="female" name="Gender" value="Nữ">
+                            <label class="form-check-label" for="female">Nữ</label>
+                        </div>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Số điện thoại</label>
+                        <input asp-for="Phone" name="Phone" class="form-control" placeholder="Nhập số điện thoại" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ngành nghề</label>
+                        <div class="row">
+                            @foreach (var item in (IEnumerable<SelectListItem>)ViewBag.ItemList)
+                            {
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="@item.Value" name="IndustSelect" value="@item.Value">
+                                        <label class="form-check-label" for="@item.Value">@item.Text</label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Tạo hồ sơ" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
